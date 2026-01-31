@@ -10,9 +10,20 @@ const firebaseConfig = {
     appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// Initialize Firebase only if config is valid
+let app;
+let auth;
 
-// Initialize Firebase Authentication and get a reference to the service
-export const auth = getAuth(app);
+try {
+    if (firebaseConfig.apiKey && firebaseConfig.apiKey !== 'your_firebase_api_key_here') {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+    } else {
+        console.warn('Firebase config missing or invalid. Auth features will not work.');
+    }
+} catch (error) {
+    console.error('Error initializing Firebase:', error);
+}
+
+export { auth };
 export default app;

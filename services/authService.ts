@@ -10,6 +10,12 @@ import {
 import { auth } from './firebaseConfig';
 import { User } from '../types';
 
+// Helper to check if auth is initialized
+const ensureAuth = () => {
+    if (!auth) throw new Error('Firebase Authentication is not initialized. Please check your environment variables.');
+    return auth;
+};
+
 const googleProvider = new GoogleAuthProvider();
 
 /**
@@ -21,7 +27,7 @@ export const signUpWithEmail = async (
     name: string
 ): Promise<User> => {
     try {
-        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(ensureAuth(), email, password);
         const firebaseUser = userCredential.user;
 
         // Update the user's display name
@@ -44,7 +50,7 @@ export const signInWithEmail = async (
     password: string
 ): Promise<User> => {
     try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await signInWithEmailAndPassword(ensureAuth(), email, password);
         return convertFirebaseUser(userCredential.user);
     } catch (error: any) {
         throw new Error(getAuthErrorMessage(error.code));
@@ -56,7 +62,7 @@ export const signInWithEmail = async (
  */
 export const signInWithGoogle = async (): Promise<User> => {
     try {
-        const result = await signInWithPopup(auth, googleProvider);
+        const result = await signInWithPopup(ensureAuth(), googleProvider);
         return convertFirebaseUser(result.user);
     } catch (error: any) {
         throw new Error(getAuthErrorMessage(error.code));
@@ -68,7 +74,7 @@ export const signInWithGoogle = async (): Promise<User> => {
  */
 export const logOut = async (): Promise<void> => {
     try {
-        await signOut(auth);
+        await signOut(ensureAuth());
     } catch (error: any) {
         throw new Error('Failed to sign out. Please try again.');
     }
