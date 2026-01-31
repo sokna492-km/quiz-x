@@ -2,7 +2,7 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { Language, Subject, Difficulty, Quiz } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 
 export async function generateQuiz(
   subject: Subject,
@@ -45,9 +45,9 @@ export async function generateQuiz(
               type: Type.OBJECT,
               properties: {
                 text: { type: Type.STRING },
-                type: { 
-                  type: Type.STRING, 
-                  description: "One of: multiple-choice, true-false, fill-in-the-blank, matching" 
+                type: {
+                  type: Type.STRING,
+                  description: "One of: multiple-choice, true-false, fill-in-the-blank, matching"
                 },
                 options: {
                   type: Type.ARRAY,
@@ -66,7 +66,7 @@ export async function generateQuiz(
   });
 
   const rawData = JSON.parse(response.text || "{}");
-  
+
   return {
     id: Math.random().toString(36).substr(2, 9),
     title: rawData.title || `${subject} - ${difficulty}`,

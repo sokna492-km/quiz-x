@@ -70,7 +70,7 @@ const ResultView: React.FC<Props> = ({ quiz, userAnswers, timeTaken, onHome, onR
     if (isGeneratingImage) return;
     setIsGeneratingImage(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+      const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
       const userName = currentUser ? currentUser.name : "Learner";
 
       const prompt = `A professional, clean, ultra-minimalist white academic certificate of achievement for "${userName}". 
@@ -184,8 +184,8 @@ const ResultView: React.FC<Props> = ({ quiz, userAnswers, timeTaken, onHome, onR
                 onClick={handleGenerateCard}
                 disabled={isGeneratingImage}
                 className={`w-full py-3 md:py-4 px-6 md:px-8 rounded-xl md:rounded-2xl font-black text-base md:text-lg flex items-center justify-center gap-3 md:gap-4 transition-all shadow-lg ${isGeneratingImage
-                    ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed'
-                    : 'bg-slate-900 text-white hover:bg-black dark:bg-white dark:text-slate-900 hover:scale-[1.03] active:scale-95'
+                  ? 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed'
+                  : 'bg-slate-900 text-white hover:bg-black dark:bg-white dark:text-slate-900 hover:scale-[1.03] active:scale-95'
                   }`}
               >
                 {isGeneratingImage ? (
@@ -273,10 +273,10 @@ const ResultView: React.FC<Props> = ({ quiz, userAnswers, timeTaken, onHome, onR
               <div className="grid gap-2 md:gap-3 mb-4 md:mb-5">
                 {q.options.map((opt, oIdx) => (
                   <div key={oIdx} className={`px-3 md:px-4 py-2 md:py-3 rounded-lg md:rounded-xl text-sm md:text-base font-bold flex justify-between items-center border-2 transition-all ${oIdx === q.correctIndex
-                      ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400 border-green-200 dark:border-green-900/30'
-                      : oIdx === userAnswers[idx]
-                        ? 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-900/30'
-                        : 'bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border-transparent dark:border-slate-800'
+                    ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400 border-green-200 dark:border-green-900/30'
+                    : oIdx === userAnswers[idx]
+                      ? 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-900/30'
+                      : 'bg-slate-50 dark:bg-slate-800/50 text-slate-500 dark:text-slate-400 border-transparent dark:border-slate-800'
                     }`}>
                     <span className="flex gap-2 md:gap-3">
                       <span className="font-black opacity-40">{String.fromCharCode(65 + oIdx)}.</span>
